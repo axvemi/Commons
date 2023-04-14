@@ -74,17 +74,17 @@ public abstract class BaseState<T>
 	protected void SetSuperState(BaseState<T> newSuperstate)
 	{
 		_currentSuperstate = newSuperstate;
-		newSuperstate.SetSubState(this);
 	}
 
 	protected void SetSubState(BaseState<T> newSubstate)
 	{
 		_currentSubstate = newSubstate;
+		newSubstate.SetSuperState(this);
 	}
 
 	public override string ToString()
 	{
-		string substateName = _currentSubstate == null ? "" : " => " + _currentSubstate;
+		string substateName = _currentSubstate == null ? "" : " > " + _currentSubstate;
 		return GetStateName() + substateName;
 	}
 }
