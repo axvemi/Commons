@@ -7,8 +7,8 @@ public abstract class BaseState<T>
 
 	protected T Context => StateMachine.Context;
 
-	private BaseState<T> _currentSuperstate;
-	private BaseState<T> _currentSubstate;
+	protected BaseState<T> CurrentSuperstate;
+	protected BaseState<T> CurrentSubstate;
 
 	public BaseState(IStateMachine<T> iStateMachine, StateFactory<T> factory)
 	{
@@ -22,7 +22,7 @@ public abstract class BaseState<T>
 
 	public virtual void Update(double delta)
 	{
-		_currentSubstate?.Update(delta);
+		CurrentSubstate?.Update(delta);
 	}
 
 	/// <summary>
@@ -33,13 +33,13 @@ public abstract class BaseState<T>
 	{
 		ExitState();
 		next.EnterState();
-		if (_currentSuperstate == null)
+		if (CurrentSuperstate == null)
 		{
 			StateMachine.CurrentState = next;
 		}
 		else
 		{
-			_currentSuperstate.SetSubState(next);
+			CurrentSuperstate.SetSubState(next);
 		}
 
 		StateMachine.OnChangeState?.Invoke(this, next);
@@ -60,7 +60,7 @@ public abstract class BaseState<T>
 	/// </summary>
 	protected virtual void EnterState()
 	{
-		_currentSubstate?.EnterState();
+		CurrentSubstate?.EnterState();
 	}
 
 	/// <summary>
@@ -68,23 +68,23 @@ public abstract class BaseState<T>
 	/// </summary>
 	protected virtual void ExitState()
 	{
-		_currentSubstate?.ExitState();
+		CurrentSubstate?.ExitState();
 	}
 
 	protected void SetSuperState(BaseState<T> newSuperstate)
 	{
-		_currentSuperstate = newSuperstate;
+		CurrentSuperstate = newSuperstate;
 	}
 
 	protected void SetSubState(BaseState<T> newSubstate)
 	{
-		_currentSubstate = newSubstate;
+		CurrentSubstate = newSubstate;
 		newSubstate.SetSuperState(this);
 	}
 
 	public override string ToString()
 	{
-		string substateName = _currentSubstate == null ? "" : " > " + _currentSubstate;
+		string substateName = CurrentSubstate == null ? "" : " > " + CurrentSubstate;
 		return GetStateName() + substateName;
 	}
 }
