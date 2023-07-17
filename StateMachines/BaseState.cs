@@ -14,10 +14,6 @@ public abstract class BaseState<T>
 	{
 		StateMachine = iStateMachine;
 		Factory = factory;
-
-		//Those methods can't depend on a parameter that gets init in this constructor.
-		EnterState();
-		InitializeSubstate();
 	}
 
 	public virtual void Update(double delta)
@@ -32,7 +28,6 @@ public abstract class BaseState<T>
 	public void SwitchState(BaseState<T> next)
 	{
 		ExitState();
-		next.EnterState();
 		if (CurrentSuperstate == null)
 		{
 			StateMachine.CurrentState = next;
@@ -48,22 +43,6 @@ public abstract class BaseState<T>
 	protected abstract string GetStateName();
 
 	/// <summary>
-	/// Call on the constructor.
-	/// Used to set a substate if we have to. (ie. Grounded -> Idle/Walk)
-	/// </summary>
-	protected virtual void InitializeSubstate()
-	{
-	}
-
-	/// <summary>
-	/// Init substate and itself
-	/// </summary>
-	protected virtual void EnterState()
-	{
-		CurrentSubstate?.EnterState();
-	}
-
-	/// <summary>
 	/// De-init substate and itself
 	/// </summary>
 	protected virtual void ExitState()
@@ -71,15 +50,15 @@ public abstract class BaseState<T>
 		CurrentSubstate?.ExitState();
 	}
 
-	protected void SetSuperState(BaseState<T> newSuperstate)
-	{
-		CurrentSuperstate = newSuperstate;
-	}
-
 	protected void SetSubState(BaseState<T> newSubstate)
 	{
 		CurrentSubstate = newSubstate;
 		newSubstate.SetSuperState(this);
+	}
+	
+	private void SetSuperState(BaseState<T> newSuperstate)
+	{
+		CurrentSuperstate = newSuperstate;
 	}
 
 	public override string ToString()
