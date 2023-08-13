@@ -7,21 +7,21 @@ public class ModuleController<T>
 {
 	public T Owner { get; }
 	
-	private List<IModule<T>> _modules;
-	private List<IProcessor<T>> _processors;
+	protected List<IModule<T>> Modules;
+	protected List<IProcessor<T>> Processors;
 	
 	public ModuleController(T owner, List<IModule<T>> modules, List<IProcessor<T>> processors)
 	{
 		Owner = owner;
-		_modules = modules;
-		_processors = processors;
+		Modules = modules;
+		Processors = processors;
 
-		foreach (IModule<T> module in _modules)
+		foreach (IModule<T> module in Modules)
 		{
 			module.ModuleController = this;
 		}
 
-		foreach (IProcessor<T> processor in _processors)
+		foreach (IProcessor<T> processor in Processors)
 		{
 			processor.ModuleController = this;
 		}
@@ -29,7 +29,7 @@ public class ModuleController<T>
 	
 	public TU GetModuleOfType<TU>()
 	{
-		foreach (IModule<T> module in _modules)
+		foreach (IModule<T> module in Modules)
 		{
 			if (module is TU moduleResult) return moduleResult;
 		}
@@ -39,7 +39,7 @@ public class ModuleController<T>
 
 	public TU GetProcessorOfType<TU>()
 	{
-		foreach (IProcessor<T> processor in _processors)
+		foreach (IProcessor<T> processor in Processors)
 		{
 			if (processor is TU moduleResult) return moduleResult;
 		}
