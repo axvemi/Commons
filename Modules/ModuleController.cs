@@ -3,23 +3,25 @@ using System.Collections.Generic;
 
 namespace Axvemi.Commons.Modules;
 
-public class ModuleController
+public class ModuleController<T>
 {
+	public T Owner { get; }
 	
-	private List<IModule> _modules;
-	private List<IProcessor> _processors;
+	private List<IModule<T>> _modules;
+	private List<IProcessor<T>> _processors;
 	
-	public ModuleController(List<IModule> modules, List<IProcessor> processors)
+	public ModuleController(T owner, List<IModule<T>> modules, List<IProcessor<T>> processors)
 	{
+		Owner = owner;
 		_modules = modules;
 		_processors = processors;
 
-		foreach (IModule module in _modules)
+		foreach (IModule<T> module in _modules)
 		{
 			module.ModuleController = this;
 		}
 
-		foreach (IProcessor processor in _processors)
+		foreach (IProcessor<T> processor in _processors)
 		{
 			processor.ModuleController = this;
 		}
@@ -27,7 +29,7 @@ public class ModuleController
 	
 	public TU GetModuleOfType<TU>()
 	{
-		foreach (IModule module in _modules)
+		foreach (IModule<T> module in _modules)
 		{
 			if (module is TU moduleResult) return moduleResult;
 		}
@@ -37,7 +39,7 @@ public class ModuleController
 
 	public TU GetProcessorOfType<TU>()
 	{
-		foreach (IProcessor processor in _processors)
+		foreach (IProcessor<T> processor in _processors)
 		{
 			if (processor is TU moduleResult) return moduleResult;
 		}

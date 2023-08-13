@@ -1,6 +1,6 @@
 ﻿namespace Axvemi.Commons.Modules;
 
-public interface IModule
+public interface IModule<T>
 {
-	ModuleController ModuleController { get; set; }
+	ModuleController<T> ModuleController { get; set; }
 }
