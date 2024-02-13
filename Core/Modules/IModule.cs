@@ -2,5 +2,7 @@
 
 public interface IModule<T>
 {
-	ModuleController<T> ModuleController { get; set; }
+    ModuleController<T> ModuleController { get; set; }
+
+    void OnModulesReady();
 }

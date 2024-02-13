@@ -2,5 +2,5 @@
 
 public interface IConstraint
 {
-	bool Ready { get; }
+    bool Ready { get; }
 }

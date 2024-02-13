@@ -2,5 +2,5 @@
 
 public interface IProcessor<T>
 {
-	ModuleController<T> ModuleController { get; set; }
+    ModuleController<T> ModuleController { get; set; }
 }
