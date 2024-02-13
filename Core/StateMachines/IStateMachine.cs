@@ -6,5 +6,5 @@ public interface IStateMachine<T>
 {
 	public T Context { get; }
 	public BaseState<T> CurrentState { get; set; }
-	public Action<BaseState<T>, BaseState<T>> OnChangeState { get; }
+	public Action<BaseState<T>, BaseState<T>> OnStateChanged { get; }
 }

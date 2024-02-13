@@ -37,7 +37,7 @@ public abstract class BaseState<T>
 			CurrentSuperstate.SetSubState(next);
 		}
 
-		StateMachine.OnChangeState?.Invoke(this, next);
+		StateMachine.OnStateChanged?.Invoke(this, next);
 	}
 
 	protected abstract string GetStateName();
