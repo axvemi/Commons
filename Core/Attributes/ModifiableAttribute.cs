@@ -1,4 +1,3 @@
-using Godot;
 using System;
 using System.Collections.Generic;
 
@@ -30,9 +29,7 @@ public abstract class ModifiableAttribute<T>
         }
     }
 
-    public delegate void ValueChangedEventHandler(object sender, ValueChangedEventArgs e);
-
-    public event ValueChangedEventHandler ValueChanged;
+    public event Action<ValueChangedEventArgs> ValueChanged;
 
     public T ModifiedValue => GetModifiedValue();
     public T Value { get; private set; }
@@ -87,10 +84,10 @@ public abstract class ModifiableAttribute<T>
     protected abstract T Add(T value1, T value2);
 
     protected virtual T MakeCopy(T value) => value;
-    
+
     protected void InvokeValueChangedEvent(T prevValue)
     {
-        ValueChanged?.Invoke(this, new ValueChangedEventArgs(ModifiedValue, prevValue));
+        ValueChanged?.Invoke(new ValueChangedEventArgs(ModifiedValue, prevValue));
     }
 
 }
