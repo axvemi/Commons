@@ -36,6 +36,10 @@ public abstract class ModifiableAttribute<T>
 
     private readonly List<AttributeModifier<T>> _modifiers = new();
 
+    public ModifiableAttribute()
+    {
+    }
+
     public ModifiableAttribute(T baseValue)
     {
         Value = baseValue;
