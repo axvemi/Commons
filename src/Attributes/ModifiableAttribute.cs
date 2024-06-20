@@ -53,7 +53,7 @@ public abstract class ModifiableAttribute<T>
             Value = value;
             if (!EqualityComparer<T>.Default.Equals(ModifiedValue, prevModifiedValue))
             {
-                InvokeValueChangedEvent(prevModifiedValue);
+                InvokeValueChangedEvent(new ValueChangedEventArgs(ModifiedValue, prevModifiedValue));
             }
         }
     }
@@ -67,7 +67,7 @@ public abstract class ModifiableAttribute<T>
     {
         T prevValue = ModifiedValue;
         _modifiers.Add(modifier);
-        InvokeValueChangedEvent(prevValue);
+        InvokeValueChangedEvent(new ValueChangedEventArgs(ModifiedValue, prevValue));
     }
 
     public void RemoveModifier(object source)
@@ -75,7 +75,7 @@ public abstract class ModifiableAttribute<T>
         T prevValue = ModifiedValue;
         AttributeModifier<T> attributeModifier = _modifiers.Find(x => x.Source == source);
         _modifiers.Remove(attributeModifier);
-        InvokeValueChangedEvent(prevValue);
+        InvokeValueChangedEvent(new ValueChangedEventArgs(ModifiedValue, prevValue));
     }
 
     protected virtual T GetModifiedValue()
@@ -89,9 +89,9 @@ public abstract class ModifiableAttribute<T>
 
     protected virtual T MakeCopy(T value) => value;
 
-    protected void InvokeValueChangedEvent(T prevValue)
+    protected virtual void InvokeValueChangedEvent(ValueChangedEventArgs args)
     {
-        ValueChanged?.Invoke(new ValueChangedEventArgs(ModifiedValue, prevValue));
+        ValueChanged?.Invoke(args);
     }
 
 }
