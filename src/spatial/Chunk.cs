@@ -1,8 +1,8 @@
 using System;
 using System.Numerics;
-using static Axvemi.Commons.Spatial.Chunk;
+using static Axvemi.Commons.Chunk;
 
-namespace Axvemi.Commons.Spatial;
+namespace Axvemi.Commons;
 
 public static class Chunk
 {

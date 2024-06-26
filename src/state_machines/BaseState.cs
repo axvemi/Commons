@@ -1,4 +1,4 @@
-namespace Axvemi.Commons.StateMachines;
+namespace Axvemi.Commons;
 
 public abstract class BaseState<T>
 {

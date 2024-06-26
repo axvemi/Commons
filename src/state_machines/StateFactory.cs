@@ -1,6 +1,6 @@
 using System;
 
-namespace Axvemi.Commons.StateMachines;
+namespace Axvemi.Commons;
 
 public abstract class StateFactory<T>
 {

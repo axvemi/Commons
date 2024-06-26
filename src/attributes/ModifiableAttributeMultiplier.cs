@@ -1,5 +1,5 @@
 
-namespace Axvemi.Commons.Attributes;
+namespace Axvemi.Commons;
 
 public class ModifiableAttributeMultiplier : ModifiableAttribute<float>
 {

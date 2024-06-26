@@ -1,4 +1,4 @@
-﻿namespace Axvemi.Commons.Modules;
+﻿namespace Axvemi.Commons;
 
 public interface IProcessor<T>
 {

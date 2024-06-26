@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Axvemi.Commons.Modules;
+namespace Axvemi.Commons;
 
 public class ModuleController<T>
 {

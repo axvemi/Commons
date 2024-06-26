@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Axvemi.Commons.Attributes;
+namespace Axvemi.Commons;
 
 public class AttributeModifier<T>
 {

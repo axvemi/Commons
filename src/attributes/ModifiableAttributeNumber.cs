@@ -1,7 +1,7 @@
 ﻿using System;
 
-namespace Axvemi.Commons.Attributes;
-public class ModifiableAttributeNumber<T>: ModifiableAttribute<T> where T: struct, IConvertible
+namespace Axvemi.Commons;
+public class ModifiableAttributeNumber<T> : ModifiableAttribute<T> where T : struct, IConvertible
 {
     public ModifiableAttributeNumber(T baseValue) : base(baseValue)
     {

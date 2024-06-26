@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Numerics;
-using static Axvemi.Commons.Spatial.Tile;
+using static Axvemi.Commons.Tile;
 
-namespace Axvemi.Commons.Spatial;
+namespace Axvemi.Commons;
 
 public static class Tile
 {

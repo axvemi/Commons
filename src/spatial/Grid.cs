@@ -1,7 +1,7 @@
 using System;
 using System.Numerics;
 
-namespace Axvemi.Commons.Spatial;
+namespace Axvemi.Commons;
 
 public class Grid<T>
 {
