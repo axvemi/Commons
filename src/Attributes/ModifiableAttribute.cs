@@ -29,7 +29,7 @@ public abstract class ModifiableAttribute<T>
         }
     }
 
-    public event Action<ValueChangedEventArgs> ValueChanged;
+    public event EventHandler<ValueChangedEventArgs> ValueChanged;
 
     public T ModifiedValue => GetModifiedValue();
     public T Value { get; private set; }
@@ -91,7 +91,7 @@ public abstract class ModifiableAttribute<T>
 
     protected virtual void InvokeValueChangedEvent(ValueChangedEventArgs args)
     {
-        ValueChanged?.Invoke(args);
+        ValueChanged?.Invoke(this, args);
     }
 
 }
