@@ -18,5 +18,5 @@ public interface IStateMachine<T>
 
 	public T Context { get; }
 	public BaseState<T> CurrentState { get; set; }
-	public EventHandler<StateChangedEventArgs> StateChanged { get; }
+	public Action<StateChangedEventArgs> StateChanged { get; }
 }
