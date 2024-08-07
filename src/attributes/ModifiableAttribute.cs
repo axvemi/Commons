@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Axvemi.Commons;
 
-public class AttributeModifier<T>
-{
-    public T Value { get; set; }
-    public object Source { get; private set; }
+public class AttributeModifier<T>{
+    public T Value;
+    public object Source;
 
     public AttributeModifier(T value, object source = null)
     {
@@ -17,81 +16,39 @@ public class AttributeModifier<T>
 
 public abstract class ModifiableAttribute<T>
 {
-    public class ValueChangedEventArgs : EventArgs
-    {
-        public T PreviousValue { get; }
-        public T ActualValue { get; }
+    //public event EventHandler<EventArgs> ValueChanged;
 
-        public ValueChangedEventArgs(T actualValue, T previousValue)
-        {
-            ActualValue = actualValue;
-            PreviousValue = previousValue;
-        }
+    /// <summary>
+    /// Value without the modifiers applied
+    /// </summary>
+    public T RawValue;
+    /// <summary>
+    /// Value with the modifiers applied
+    /// </summary>
+    public T Value => GetModifiedValue();
+
+    public List<AttributeModifier<T>> Modifiers { get; } = new();
+
+    public ModifiableAttribute(T value){
+        RawValue = value;
     }
 
-    public event Action<ValueChangedEventArgs> ValueChanged;
-
-    public T ModifiedValue => GetModifiedValue();
-    public T Value { get; private set; }
-
-    private readonly List<AttributeModifier<T>> _modifiers = new();
-
-    public ModifiableAttribute()
-    {
+    public void AddModifier(AttributeModifier<T> modifier){
+        Modifiers.Add(modifier);
     }
 
-    public ModifiableAttribute(T baseValue)
-    {
-        Value = baseValue;
+    public void RemoveModifier(object source){
+        var modifier = Modifiers.FirstOrDefault(m => m.Source == source);
+        Modifiers.Remove(modifier);
     }
 
-    public virtual void SetValue(T value)
-    {
-        if (!EqualityComparer<T>.Default.Equals(Value, value))
-        {
-            T prevModifiedValue = ModifiedValue;
-            Value = value;
-            if (!EqualityComparer<T>.Default.Equals(ModifiedValue, prevModifiedValue))
-            {
-                InvokeValueChangedEvent(new ValueChangedEventArgs(ModifiedValue, prevModifiedValue));
-            }
-        }
-    }
-
-    public void AddValue(T value)
-    {
-        SetValue(Add(Value, value));
-    }
-
-    public void AddModifier(AttributeModifier<T> modifier)
-    {
-        T prevValue = ModifiedValue;
-        _modifiers.Add(modifier);
-        InvokeValueChangedEvent(new ValueChangedEventArgs(ModifiedValue, prevValue));
-    }
-
-    public void RemoveModifier(object source)
-    {
-        T prevValue = ModifiedValue;
-        AttributeModifier<T> attributeModifier = _modifiers.Find(x => x.Source == source);
-        _modifiers.Remove(attributeModifier);
-        InvokeValueChangedEvent(new ValueChangedEventArgs(ModifiedValue, prevValue));
-    }
-
-    protected virtual T GetModifiedValue()
-    {
-        T value = MakeCopy(Value);
-        _modifiers.ForEach(mod => value = Add(value, mod.Value));
+    protected T GetModifiedValue(){
+        T value = MakeCopy(RawValue);
+        Modifiers.ForEach(m => value = Add(value, m.Value));
         return value;
     }
 
     protected abstract T Add(T value1, T value2);
 
     protected virtual T MakeCopy(T value) => value;
-
-    protected virtual void InvokeValueChangedEvent(ValueChangedEventArgs args)
-    {
-        ValueChanged?.Invoke(args);
-    }
-
 }
