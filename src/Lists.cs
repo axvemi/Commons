@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Axvemi.Commons;
 
 public static class Lists
 {
-    /// <summary>
-    /// Shuffles a list.
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="list"></param>
-    public static void Shuffle<T>(this IList<T> list)
+    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> source)
     {
-        Random random = new();
-        int n = list.Count;
-        for (int i = 0; i < (n - 1); i++)
-        {
-            int r = i + random.Next(n - i);
-            (list[r], list[i]) = (list[i], list[r]);
-        }
+        return source.OrderBy(x => Guid.NewGuid());
+    }
+
+    public static T PickRandom<T>(this IEnumerable<T> source)
+    {
+        return source.PickRandom(1).Single();
+    }
+
+    public static IEnumerable<T> PickRandom<T>(this IEnumerable<T> source, int count)
+    {
+        return source.Shuffle().Take(count);
     }
 }
