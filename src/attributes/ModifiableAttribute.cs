@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace Axvemi.Commons;
 
-public class AttributeModifier<T>{
+public class AttributeModifier<T>
+{
     public T Value;
     public object Source;
 
@@ -29,20 +30,24 @@ public abstract class ModifiableAttribute<T>
 
     public List<AttributeModifier<T>> Modifiers { get; } = new();
 
-    public ModifiableAttribute(T value){
+    public ModifiableAttribute(T value)
+    {
         RawValue = value;
     }
 
-    public void AddModifier(AttributeModifier<T> modifier){
+    public void AddModifier(AttributeModifier<T> modifier)
+    {
         Modifiers.Add(modifier);
     }
 
-    public void RemoveModifier(object source){
+    public void RemoveModifier(object source)
+    {
         var modifier = Modifiers.FirstOrDefault(m => m.Source == source);
         Modifiers.Remove(modifier);
     }
 
-    protected T GetModifiedValue(){
+    protected T GetModifiedValue()
+    {
         T value = MakeCopy(RawValue);
         Modifiers.ForEach(m => value = Add(value, m.Value));
         return value;
